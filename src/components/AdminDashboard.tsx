@@ -22,7 +22,19 @@ export default function AdminDashboard({ token, onLogout }: { token: string, onL
         setError(json.error || 'Failed to fetch dashboard data');
       }
     } catch (err) {
-      setError('Network error');
+      if (token === 'demo-token') {
+        // Mock data for demo purposes when server is unreachable
+        setData({
+          stats: { totalUsers: 134, activeQuizzes: 12 },
+          recentActivity: [
+            { action: 'John finished a quiz (Score: 8/10)', timestamp: new Date().toISOString() },
+            { action: 'Alice started a quiz', timestamp: new Date(Date.now() - 120000).toISOString() },
+            { action: 'New user "DemoTester" registered', timestamp: new Date(Date.now() - 600000).toISOString() }
+          ]
+        });
+      } else {
+        setError('Network error');
+      }
     } finally {
       setLoading(false);
     }
