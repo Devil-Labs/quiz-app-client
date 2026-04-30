@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { LogOut, RefreshCw, Activity, Users, FileText } from 'lucide-react';
+import AdminQuizEditor from './AdminQuizEditor';
 
 export default function AdminDashboard({ token, onLogout }: { token: string, onLogout: () => void }) {
   const [data, setData] = useState<any>(null);
@@ -117,6 +118,9 @@ export default function AdminDashboard({ token, onLogout }: { token: string, onL
           </div>
         </div>
       )}
+
+      {/* Render Quiz Editor Below Dashboard Stats */}
+      <AdminQuizEditor />
     </div>
   );
 }

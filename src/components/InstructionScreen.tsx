@@ -1,14 +1,33 @@
-import { BookOpen, CheckCircle, Clock, AlertTriangle } from 'lucide-react';
+import { BookOpen, CheckCircle, Clock, AlertTriangle, Share2 } from 'lucide-react';
+import { getQuizConfig } from '../types/quiz';
+import { useState } from 'react';
 
 export default function InstructionScreen({ onNext }: { onNext: () => void }) {
+  const config = getQuizConfig();
+  const [copied, setCopied] = useState(false);
+
+  const handleShare = () => {
+    navigator.clipboard.writeText(window.location.origin);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
-    <div className="w-full h-full p-6 sm:p-10 md:p-16 flex flex-col justify-center items-center text-center">
+    <div className="w-full h-full p-6 sm:p-10 md:p-16 flex flex-col justify-center items-center text-center relative">
+      <button 
+        onClick={handleShare}
+        className="absolute top-4 left-4 sm:top-8 sm:left-8 flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-md text-indigo-600 hover:bg-indigo-50 border border-indigo-100 transition-colors"
+      >
+        <Share2 className="w-4 h-4" />
+        <span className="font-medium text-sm">{copied ? 'Link Copied!' : 'Share Quiz'}</span>
+      </button>
+
       <BookOpen className="w-16 h-16 sm:w-20 sm:h-20 text-indigo-600 mb-6 drop-shadow-md" />
       <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">
-        Welcome to the Knowledge Quiz
+        {config.title}
       </h1>
       <p className="text-base sm:text-lg lg:text-xl text-slate-600 mb-10 md:mb-16 max-w-2xl">
-        Test your skills and climb the leaderboard! Please read the rules carefully before proceeding.
+        {config.description}
       </p>
 
       <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6 text-left mb-12">

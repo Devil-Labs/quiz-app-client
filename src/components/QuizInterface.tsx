@@ -1,53 +1,10 @@
 import { useState, useEffect } from 'react';
 import type { User } from '../App';
-
-type QuestionType = 'single_mcq' | 'multiple_mcq' | 'text' | 'match';
-
-interface BaseQuestion {
-  id: number;
-  question: string;
-  type: QuestionType;
-}
-
-interface SingleMCQ extends BaseQuestion {
-  type: 'single_mcq';
-  options: string[];
-  answer: number;
-}
-
-interface MultipleMCQ extends BaseQuestion {
-  type: 'multiple_mcq';
-  options: string[];
-  answer: number[];
-}
-
-interface TextQuestion extends BaseQuestion {
-  type: 'text';
-  answer: string;
-}
-
-interface MatchQuestion extends BaseQuestion {
-  type: 'match';
-  leftItems: string[];
-  rightItems: string[];
-  answer: Record<string, string>;
-}
-
-type Question = SingleMCQ | MultipleMCQ | TextQuestion | MatchQuestion;
-
-const MOCK_QUESTIONS: Question[] = [
-  { id: 1, type: 'single_mcq', question: 'Which feature in JavaScript allows you to extract properties from objects and set them to variables?', options: ['Spread operator', 'Destructuring assignment', 'Rest parameters', 'Template literals'], answer: 1 },
-  { id: 2, type: 'multiple_mcq', question: 'Which of the following are valid React Hooks? (Select all that apply)', options: ['useState', 'useComponent', 'useEffect', 'useFetch'], answer: [0, 2] },
-  { id: 3, type: 'text', question: 'What does CSS stand for?', answer: 'cascading style sheets' },
-  {
-    id: 4, type: 'match', question: 'Match the framework/library to its language:',
-    leftItems: ['React', 'Laravel', 'Django', 'Spring'],
-    rightItems: ['Java', 'Python', 'PHP', 'JavaScript'],
-    answer: { 'React': 'JavaScript', 'Laravel': 'PHP', 'Django': 'Python', 'Spring': 'Java' }
-  }
-];
+import { getQuizConfig } from '../types/quiz';
 
 export default function QuizInterface({ user, onFinish }: { user: User | null, onFinish: (score: number) => void }) {
+  const MOCK_QUESTIONS = getQuizConfig().questions;
+
   const [currentQ, setCurrentQ] = useState(0);
   const [score, setScore] = useState(0);
   const [violationLogs, setViolationLogs] = useState<{ time: string; event: string }[]>([]);
